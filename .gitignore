@@ -23,3 +23,8 @@
 hs_err_pid*
 
 chromedriver
+
+/target/
+.classpath
+.project
+.settings/
