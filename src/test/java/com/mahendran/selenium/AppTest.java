@@ -33,7 +33,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
    URL hub = null;
    try {
-     hub = new URL("http://localhost:4444/wd/hub");
+     hub = new URL("http://ci-ubuntu-selenium2.ceva.cloud:4444/wd/hub");
    } catch (MalformedURLException e) {
      e.printStackTrace();
    }
