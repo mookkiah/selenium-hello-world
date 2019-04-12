@@ -32,8 +32,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
    String useRemoteDriver = System.getProperty("useRemoteDriver");
 
    URL hub = null;
+   String hubUrl = System.getProperty("hubUrl");
+   String app = System.getProperty("app.home");
    try {
-     hub = new URL("http://ci-ubuntu-selenium2.ceva.cloud:4444/wd/hub");
+     hub = new URL(hubUrl);
    } catch (MalformedURLException e) {
      e.printStackTrace();
    }
@@ -46,7 +48,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
      driver = new RemoteWebDriver(hub, capabilities);
    }
    
-   driver.get("https://www.google.com/");  
+   driver.get(app);
    
    try{  
     Thread.sleep(2000);  
