@@ -4,8 +4,6 @@ curl https://selenium-release.storage.googleapis.com/3.141/selenium-server-stand
 
 #Download chromedriver for your operating system
 mvn exec:java -Dexec.args="chrome"
+mvn exec:java -Dexec.args="iexplorer"
+mvn exec:java -Dexec.args="firefox"
 
-#Download geckodriver for your operating system
-#curl https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-macos.tar.gz -o geckodriver.tar.gz
-#curl https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz -o geckodriver.tar.gz
-#tar -xvf geckodriver.tar.gz

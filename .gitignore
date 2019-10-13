@@ -25,6 +25,9 @@ hs_err_pid*
 IEDriverServer.exe
 chromedriver.exe
 chromedriver
+geckodriver.exe
+geckodriver
+msedgedriver.exe
 
 /target/
 .classpath
