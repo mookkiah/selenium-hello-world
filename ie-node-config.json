@@ -2,7 +2,7 @@
   "capabilities":
   [
     {
-      "browserName": "ie",
+      "browserName": "internet explorer",
       "maxInstances": 5,
       "seleniumProtocol": "WebDriver"
     }
