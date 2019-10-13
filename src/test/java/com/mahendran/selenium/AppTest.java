@@ -3,7 +3,9 @@ package com.mahendran.selenium;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -30,6 +32,7 @@ public class AppTest {
   }
 
   @Test
+  @EnabledOnOs(OS.WINDOWS)
   public void testInternetExplorer() throws Exception {
 
     System.out.println("IE Test");
@@ -46,20 +49,19 @@ public class AppTest {
 
   private void runTest(DesiredCapabilities capabilities) throws Exception {
     String useRemoteDriver = System.getProperty("useRemoteDriver");
-    String app = System.getProperty("app.home");
+    String app = System.getProperty("app.home", "https://google.com");
 
     if (useRemoteDriver == null) {
       initalizeLocalDriver(capabilities);
     } else {
       URL hub = null;
-      String hubUrl = System.getProperty("hubUrl");
+      String hubUrl = System.getProperty("hubUrl", "http://localhost:4444/wd/hub");
 
       try {
         hub = new URL(hubUrl);
       } catch (MalformedURLException e) {
         e.printStackTrace();
       }
-      System.out.println("Using remote  $$$$$$$$$$$$$$$$$$$$$");
       driver = new RemoteWebDriver(hub, capabilities);
     }
 
