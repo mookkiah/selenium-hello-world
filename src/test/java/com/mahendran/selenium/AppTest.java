@@ -27,7 +27,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 public class AppTest {
-  public static WebDriver driver;
+  public  WebDriver driver;
 
   @Test
   public void testChrome() throws Exception {
