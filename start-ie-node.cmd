@@ -1,0 +1,1 @@
+java -Dwebdriver.ie.driver=.\IEDriverServer.exe -jar selenium-server-standalone.jar -role node -nodeConfig ie-node-config.json -debug 
