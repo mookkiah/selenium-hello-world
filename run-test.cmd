@@ -1,3 +1,3 @@
-#!/bin/sh
-mvn clean test -DuseRemoteDriver -Dapp.home=https://google.com -DhubUrl=http://localhost:4444/wd/hub
-#mvn clean test -Dwebdriver.chrome.driver=./chromedriver
+mvn clean test -DuseRemoteDriver
+rem mvn clean test -DuseRemoteDriver -DhubUrl=http://localhost:4444/wd/hub
+rem mvn clean test -Dwebdriver.chrome.driver=./chromedriver

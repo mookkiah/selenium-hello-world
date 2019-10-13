@@ -12,7 +12,7 @@ $./start-chrome-node.sh
 
 In third command window 
 To run using local ChromeDriver
-$./mvnw clean test -Dwebdriver.chrome.driver=./chromedriver
+$./run-test.sh
 
 To run using remote web driver
 $./mvnw clean test -DuseRemoteDriver

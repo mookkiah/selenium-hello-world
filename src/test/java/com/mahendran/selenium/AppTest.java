@@ -2,12 +2,18 @@ package com.mahendran.selenium;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByClassName;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -62,8 +68,6 @@ public class AppTest {
 
   private void runTest(DesiredCapabilities capabilities) throws Exception {
     String useRemoteDriver = System.getProperty("useRemoteDriver");
-    String app = System.getProperty("app.home", "https://google.com");
-
     if (useRemoteDriver == null) {
       initalizeLocalDriver(capabilities);
     } else {
@@ -78,7 +82,28 @@ public class AppTest {
       driver = new RemoteWebDriver(hub, capabilities);
     }
 
-    driver.get(app);
+    driver.get("https://google.com");
+    
+    driver.findElement(By.name("q")).sendKeys("Selenium"+Keys.ENTER);
+    
+ // get the number of pages
+    int size = driver.findElements(By.cssSelector("[valign='top'] > td")).size();
+    for(int j = 1 ; j < size ; j++) {
+        if (j > 1) {// we don't need to navigate to the first page
+            driver.findElement(By.cssSelector("[aria-label='Page " + j + "']")).click(); // navigate to page number j
+        }
+        String pagesearch = driver.getCurrentUrl();
+        List<WebElement> findElements = driver.findElements(By.xpath("//*[@id='rso']//h3/a"));
+        System.out.println(findElements.size());
+        for(int i=0;i<findElements.size();i++){
+            findElements= driver.findElements(By.xpath("//*[@id='rso']//h3/a"));                
+            findElements.get(i).click(); 
+            driver.navigate().to(pagesearch);
+            JavascriptExecutor jse = (JavascriptExecutor) driver;
+            //Scroll vertically downward by 250 pixels
+            jse.executeScript("window.scrollBy(0,250)", "");
+        }
+    }
 
     try {
       Thread.sleep(2000);
