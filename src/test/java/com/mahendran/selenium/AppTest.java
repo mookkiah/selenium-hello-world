@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -17,6 +18,7 @@ import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 public class AppTest {
   public static WebDriver driver;
@@ -26,6 +28,17 @@ public class AppTest {
 
     System.out.println("Chrome Test");
     DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+
+    addLoggingPreference(capabilities);
+    runTest(capabilities);
+  }
+  
+  @Test
+  @EnabledOnOs(OS.MAC)
+  public void testSafari() throws Exception {
+
+    System.out.println("Safari Test");
+    DesiredCapabilities capabilities = DesiredCapabilities.safari();
 
     addLoggingPreference(capabilities);
     runTest(capabilities);
@@ -74,7 +87,12 @@ public class AppTest {
     }
     System.out.println("Closing Browser");
     driver.close();
-    driver.quit();
+    try {
+      driver.quit();
+    }catch (NoSuchSessionException e) {
+      System.out.println("Quit is not required in this browser");
+    }
+    
   }
 
   private void initalizeLocalDriver(DesiredCapabilities capabilities) throws Exception {
@@ -85,8 +103,9 @@ public class AppTest {
       driver = new FirefoxDriver(capabilities);
     } else if (browser.equalsIgnoreCase(BrowserType.CHROME)) {
       driver = new ChromeDriver(capabilities);
+    } else if (browser.equalsIgnoreCase(BrowserType.SAFARI)) {
+      driver = new SafariDriver(capabilities);
     }
-    // Check if parameter passed as 'Edge'
     else if (browser.equalsIgnoreCase(BrowserType.EDGE)) {
       driver = new EdgeDriver(capabilities);
     } else {
