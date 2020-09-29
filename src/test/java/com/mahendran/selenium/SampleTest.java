@@ -137,15 +137,22 @@ public class SampleTest {
   private void runTest(DesiredCapabilities capabilities) throws Exception {
 
     initializeDriver(capabilities);
-
+    System.out.println("Initialized the Driver");
+    System.out.println("Entering google url in the browser");
     driver.get("https://google.com");
+    System.out.println("Typing Selenium in search input and hitting Enter");
+
     driver.findElement(By.name("q")).sendKeys("Selenium" + Keys.ENTER);
+    Thread.sleep(2000); // TODO: Added to support firefox. But need to change to wait until page loaded with result.
 
     // get the number of pages
-    int size = driver.findElements(By.cssSelector("[valign='top'] > td")).size();
+    int size = driver.findElements(By.cssSelector("tr[valign='top'] > td")).size();
+    System.out.println("Number of result page: " + size);
     for (int j = 1; j < size; j++) {
       if (j > 1) {// we don't need to navigate to the first page
-        driver.findElement(By.cssSelector("[aria-label='Page " + j + "']")).click(); // navigate to page number j
+        System.out.println("Click page " + j);
+        driver.findElement(By.cssSelector("a[aria-label='Page " + j + "']")).click(); // navigate to page number j
+        Thread.sleep(2000); 
       }
       String pagesearch = driver.getCurrentUrl();
       List<WebElement> findElements = driver.findElements(By.xpath("//*[@id='rso']//h3/a"));
@@ -155,8 +162,11 @@ public class SampleTest {
         findElements.get(i).click();
         driver.navigate().to(pagesearch);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
+        System.out.println("Scrolling down...");
         // Scroll vertically downward by 250 pixels
         jse.executeScript("window.scrollBy(0,250)", "");
+        
+        Thread.sleep(2000); 
       }
     }
 
