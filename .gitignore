@@ -33,3 +33,5 @@ msedgedriver.exe
 .classpath
 .project
 .settings/
+.idea/
+**/*.iml

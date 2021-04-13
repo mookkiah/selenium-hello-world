@@ -6,13 +6,38 @@ Browser Matrix
 
 selenium hello world
 
+---
+**NOTE**
+
+One time Command to download selenium server jar and browsers driver
+```shell
+./setup.sh
+```
+---
+
+Running all Selenium test locally
+```shell
+mvn clean test
+```
+
 To run a sample test using Chrome locally.
 
 ```
 mvn clean test -Dtest=SampleTest#testChrome
 ```
 
-To run a sample test using Chrome in remote hub (running in docker-selenium)
+### Starting a [standalone](https://www.selenium.dev/documentation/en/grid/grid_4/setting_up_your_own_grid/#standalone-mode) Selinium Grid
+```shell
+java -jar selenium-server.jar standalone
+```
+
+To run a test
+```shell
+./run-test.sh
+```
+
+
+To run a sample test using Chrome in a remote hub (running in docker-selenium)
 
 ```
 docker run -d -p 4444:4444 -p 5901:5900  -v /dev/shm:/dev/shm selenium/standalone-chrome:4.0.0-alpha-7-prerelease-20200921
@@ -39,8 +64,11 @@ mvn clean test -Dtest=SampleTest#testSafari
 ```
 
 
-One time Command to download selenium standalone driver and chromedriver
-\$./setup.sh
+
+
+
+
+
 
 In first command window
 \$./start-hub.sh

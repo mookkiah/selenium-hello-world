@@ -1,6 +1,6 @@
 #!/bin/sh
 #Download selenium server standalone
-curl https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar -o selenium-server-standalone.jar
+curl https://selenium-release.storage.googleapis.com/4.0-beta-2/selenium-server-4.0.0-beta-2.jar -o selenium-server.jar
 
 #Download chromedriver for your operating system
 ./mvnw exec:java -Dexec.args="chrome"

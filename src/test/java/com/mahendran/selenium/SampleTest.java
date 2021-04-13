@@ -1,30 +1,33 @@
 package com.mahendran.selenium;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.*;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchSessionException;
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.BrowserType;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariDriver;
 
 public class SampleTest {
 
@@ -33,7 +36,7 @@ public class SampleTest {
   @Test
   @DisplayName("testChrome()")
   public void testChrome(TestInfo testInfo) throws Exception {
-    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+    ChromeOptions capabilities = new ChromeOptions();
     addGeneralCapabilities(testInfo, capabilities);
     addSauceLabsCapabilities(capabilities);
     addLoggingPreference(capabilities);
@@ -42,8 +45,9 @@ public class SampleTest {
 
   @Test
   @DisplayName("testSafari()")
+  @EnabledOnOs(OS.MAC)
   public void testSafari(TestInfo testInfo) throws Exception {
-    DesiredCapabilities capabilities = DesiredCapabilities.safari();
+    SafariOptions capabilities = new SafariOptions();
     addGeneralCapabilities(testInfo, capabilities);
     addLoggingPreference(capabilities);
     addSauceLabsCapabilities(capabilities);
@@ -53,7 +57,7 @@ public class SampleTest {
   @Test
   @DisplayName("testFirefox()")
   public void testFirefox(TestInfo testInfo) throws Exception {
-    DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+    FirefoxOptions capabilities = new FirefoxOptions();
     addGeneralCapabilities(testInfo, capabilities);
     addLoggingPreference(capabilities);
     addSauceLabsCapabilities(capabilities);
@@ -62,9 +66,10 @@ public class SampleTest {
 
   @Test
   @DisplayName("testEdge()")
+  @EnabledOnOs(OS.WINDOWS)
   public void testEdge(TestInfo testInfo) throws Exception {
-    DesiredCapabilities capabilities = DesiredCapabilities.edge();
-    capabilities.setCapability(CapabilityType.PLATFORM, Platform.WIN10);
+    EdgeOptions capabilities = new EdgeOptions();
+    capabilities.setCapability(CapabilityType.PLATFORM_NAME, Platform.WIN10);
     addGeneralCapabilities(testInfo, capabilities);
     addLoggingPreference(capabilities);
     addSauceLabsCapabilities(capabilities);
@@ -72,9 +77,10 @@ public class SampleTest {
   }
 
   @Test
+  @EnabledOnOs(OS.WINDOWS)
   @DisplayName("testInternetExplorer()")
   public void testInternetExplorer(TestInfo testInfo) throws Exception {
-    DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
+    InternetExplorerOptions capabilities = new InternetExplorerOptions();
     addGeneralCapabilities(testInfo, capabilities);
     addLoggingPreference(capabilities);
     addSauceLabsCapabilities(capabilities);
@@ -87,25 +93,25 @@ public class SampleTest {
 
   }
 
-  private void initalizeLocalDriver(DesiredCapabilities capabilities) throws Exception {
+  private void initalizeLocalDriver(AbstractDriverOptions capabilities) throws Exception {
     String browser = (String) capabilities.getCapability(CapabilityType.BROWSER_NAME);
     if (browser.equalsIgnoreCase(BrowserType.IE)) {
-      driver = new InternetExplorerDriver(capabilities);
+      driver = new InternetExplorerDriver((InternetExplorerOptions)capabilities);
     } else if (browser.equalsIgnoreCase(BrowserType.FIREFOX)) {
-      driver = new FirefoxDriver(capabilities);
+      driver = new FirefoxDriver((FirefoxOptions) capabilities);
     } else if (browser.equalsIgnoreCase(BrowserType.CHROME)) {
-      driver = new ChromeDriver(capabilities);
+      driver = new ChromeDriver((ChromeOptions) capabilities);
     } else if (browser.equalsIgnoreCase(BrowserType.SAFARI)) {
-      driver = new SafariDriver(capabilities);
+      driver = new SafariDriver((SafariOptions) capabilities);
     } else if (browser.equalsIgnoreCase(BrowserType.EDGE)) {
-      driver = new EdgeDriver(capabilities);
+      driver = new EdgeDriver((EdgeOptions) capabilities);
     } else {
       // If no browser passed throw exception
       throw new Exception("Browser is not correct");
     }
   }
 
-  private void addLoggingPreference(DesiredCapabilities capabilities) {
+  private void addLoggingPreference(AbstractDriverOptions capabilities) {
     LoggingPreferences logPrefs = new LoggingPreferences();
     logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
     logPrefs.enable(LogType.PROFILER, Level.ALL);
@@ -117,24 +123,26 @@ public class SampleTest {
   }
 
   // https://wiki.saucelabs.com/display/DOCS/Java+Test+Setup+Example
-  private void addSauceLabsCapabilities(DesiredCapabilities capabilities) {
+  private void addSauceLabsCapabilities(AbstractDriverOptions capabilities) {
     String sauceUserName = System.getenv("SAUCE_USERNAME");
     String sauceAccessKey = System.getenv("SAUCE_ACCESS_KEY");
 
-    // set your user name and access key to run tests in Sauce
-    capabilities.setCapability("username", sauceUserName);
+    if(sauceUserName != null && sauceAccessKey != null) {
+      // set your user name and access key to run tests in Sauce
+      capabilities.setCapability("username", sauceUserName);
 
-    // set your sauce labs access key
-    capabilities.setCapability("accessKey", sauceAccessKey);
+      // set your sauce labs access key
+      capabilities.setCapability("accessKey", sauceAccessKey);
+    }
   }
 
-  private void addGeneralCapabilities(TestInfo testInfo, DesiredCapabilities capabilities) {
+  private void addGeneralCapabilities(TestInfo testInfo, AbstractDriverOptions capabilities) {
     // set your test case name so that it shows up in Sauce Labs
     capabilities.setCapability("name", testInfo.getDisplayName());
   }
 
   // Source: https://dzone.com/articles/selenium-with-java-google-search
-  private void runTest(DesiredCapabilities capabilities) throws Exception {
+  private void runTest(AbstractDriverOptions capabilities) throws Exception {
 
     initializeDriver(capabilities);
     System.out.println("Initialized the Driver");
@@ -146,9 +154,9 @@ public class SampleTest {
     Thread.sleep(2000); // TODO: Added to support firefox. But need to change to wait until page loaded with result.
 
     // get the number of pages
-    int size = driver.findElements(By.cssSelector("tr[valign='top'] > td")).size();
+    int size = driver.findElements(By.xpath("//*[@id=\"xjs\"]/table/tbody/tr/td/a")).size();
     System.out.println("Number of result page: " + size);
-    for (int j = 1; j < size; j++) {
+    for (int j = 1; j <= size; j++) {
       if (j > 1) {// we don't need to navigate to the first page
         System.out.println("Click page " + j);
         driver.findElement(By.cssSelector("a[aria-label='Page " + j + "']")).click(); // navigate to page number j
@@ -180,7 +188,7 @@ public class SampleTest {
 
   }
 
-  private void initializeDriver(DesiredCapabilities capabilities) throws Exception, MalformedURLException {
+  private void initializeDriver(AbstractDriverOptions capabilities) throws Exception, MalformedURLException {
     // For SauceLab => -DhubUrl=https://ondemand.saucelabs.com:443/wd/hub
     // For local grid => -DhubUrl=http://localhost:4444/wd/hub
     String hubUrl = System.getProperty("hubUrl");
