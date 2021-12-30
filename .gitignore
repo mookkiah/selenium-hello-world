@@ -35,3 +35,7 @@ msedgedriver.exe
 .settings/
 .idea/
 **/*.iml
+.DS_Store
+
+# Browser Web Driver Manager - may contain value related to locally installed browser versions
+resolution.properties
