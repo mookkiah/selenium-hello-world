@@ -17,13 +17,13 @@ One time Command to download selenium server jar and browsers driver
 
 Running all Selenium test locally
 ```shell
-mvn clean test
+./mvnw clean test
 ```
 
 To run a sample test using Chrome locally.
 
 ```
-mvn clean test -Dtest=SampleTest#testChrome
+./mvnw clean test -Dtest=SampleTest#testChrome
 ```
 
 ### Starting a [standalone](https://www.selenium.dev/documentation/en/grid/grid_4/setting_up_your_own_grid/#standalone-mode) Selinium Grid
@@ -41,26 +41,26 @@ To run a sample test using Chrome in a remote hub (running in docker-selenium)
 
 ```
 docker run -d -p 4444:4444 -p 5901:5900  -v /dev/shm:/dev/shm selenium/standalone-chrome:4.0.0-alpha-7-prerelease-20200921
-mvn clean test -Dtest=SampleTest#testChrome -DhubUrl=http://localhost:4444/wd/hub
+./mvnw clean test -Dtest=SampleTest#testChrome -DhubUrl=http://localhost:4444/wd/hub
 ```
 
 To run a sample test using Firefox locally.
 
 ```
-mvn clean test -Dtest=SampleTest#testFirefox
+./mvnw clean test -Dtest=SampleTest#testFirefox
 ```
 
 To run a sample test using Firefox in remote hub (running in docker-selenium)
 
 ```
 docker run -d -p 4444:4444 -p 5901:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox:4.0.0-alpha-7-prerelease-20200921
-mvn clean test -Dtest=SampleTest#testFirefox -DhubUrl=http://localhost:4444/wd/hub
+./mvnw clean test -Dtest=SampleTest#testFirefox -DhubUrl=http://localhost:4444/wd/hub
 ```
 
 To run a sample test using Safari locally.
 
 ```
-mvn clean test -Dtest=SampleTest#testSafari
+./mvnw clean test -Dtest=SampleTest#testSafari
 ```
 
 
